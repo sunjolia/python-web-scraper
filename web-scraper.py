@@ -12,11 +12,11 @@ page = urllib2.urlopen(jobs_page)
 #page parsed for bs4
 soup = BeautifulSoup(page, 'html.parser')
 
-job_container = soup.find('h2', attrs={'class': 'JobsListing--JobTitle'} )
-job = job_container.text
+job_containers = soup.find_all('h2', attrs={'class': 'JobsListing--JobTitle'} )
 
-print job
-# open a csv file with append, so old data will not be erased
-with open('index.csv', 'a') as csv_file:
- writer = csv.writer(csv_file)
- writer.writerow([job])
+for job_container in job_containers:
+    job = job_container.text
+    if 'Software' in job:
+        with open('index.csv', 'a') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow([job])
